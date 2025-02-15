@@ -1,0 +1,34 @@
+{
+  "thesen": [
+    {
+      "id": 1,
+      "these": "Deutschland soll aus der Kernenergie aussteigen.",
+      "thema": "Energie & Umwelt",
+      "kontext": "Diskussion um Energiewende und Klimaschutz"
+    },
+    {
+      "id": 2,
+      "these": "Der gesetzliche Mindestlohn soll erhöht werden.",
+      "thema": "Arbeit & Soziales",
+      "kontext": "Debatte um Lohngerechtigkeit und Lebenshaltungskosten"
+    },
+    {
+      "id": 3,
+      "these": "Deutschland soll mehr Geflüchtete aufnehmen.",
+      "thema": "Migration & Integration",
+      "kontext": "Aktuelle Flüchtlingssituation in Europa"
+    },
+    {
+      "id": 4,
+      "these": "Das Renteneintrittsalter soll gesenkt werden.",
+      "thema": "Rente & Alter",
+      "kontext": "Demografischer Wandel und Rentensystem"
+    },
+    {
+      "id": 5,
+      "these": "Cannabis soll legalisiert werden.",
+      "thema": "Drogenpolitik",
+      "kontext": "Gesellschaftliche Debatte um Drogenpolitik"
+    }
+  ]
+} 
