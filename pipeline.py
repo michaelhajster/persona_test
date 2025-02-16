@@ -99,22 +99,59 @@ def load_party_programs(directory: str = "data/wahlprogramme") -> Dict[str, str]
     """Load party programs from text files."""
     programs = {}
     try:
-        for file in Path(directory).glob("*.txt"):
-            with open(file, 'r', encoding='utf-8') as f:
-                programs[file.stem] = f.read()
+        # Define the specific files we want to load
+        party_files = {
+            "cdu_csu": "cdu_csu.txt",
+            "spd": "spd.txt",
+            "gruene": "grüne.txt",
+            "fdp": "fdp.txt",
+            "linke": "linke.txt",
+            "afd": "afd.txt"
+        }
+        
+        for party, filename in party_files.items():
+            file_path = Path(directory) / filename
+            if file_path.exists():
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    programs[party] = f.read()
+            else:
+                logger.warning(f"Party program file not found: {filename}")
+        
         return programs
     except Exception as e:
         logger.error(f"Error loading party programs: {e}")
         raise
 
-def load_news(path: str = "data/news/daily_news_test.txt") -> str:
-    """Load current news data."""
+def load_news(path: str = "data/news/news_kuratiert.txt") -> str:
+    """Load and process current news data."""
     try:
         with open(path, 'r', encoding='utf-8') as f:
-            return f.read()
+            news_content = f.read()
+            
+        # Process the news content to create a more focused summary
+        # Split into sections and take the most recent/relevant parts
+        sections = news_content.split("##")
+        
+        # Get the most recent month's news (last complete section)
+        recent_news = sections[-2] if len(sections) > 2 else sections[-1]
+        
+        # Extract key points
+        key_points = []
+        for line in recent_news.split("\n"):
+            if line.strip().startswith("- "):
+                # Clean up markdown formatting
+                clean_line = line.replace("**", "").replace("_", "").strip("- ")
+                key_points.append(clean_line)
+        
+        # Create a focused summary
+        summary = "Aktuelle Nachrichten:\n\n"
+        summary += "\n".join(f"- {point}" for point in key_points)
+        
+        return summary
+            
     except Exception as e:
         logger.error(f"Error loading news: {e}")
-        return ""
+        return "Keine aktuellen Nachrichten verfügbar."
 
 def create_persona_from_row(row: pd.Series, news: str) -> PersonaSchema:
     """Generate persona description from GLES data row."""
