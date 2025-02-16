@@ -120,19 +120,19 @@ def create_persona_from_row(row: pd.Series, news: str) -> PersonaSchema:
     """Generate persona description from GLES data row."""
     # Convert row to a more readable format
     data = {
-        "alter": row["alter"],
-        "geschlecht": row["geschlecht"],
-        "bildung": row["bildung"],
-        "beruf": row["beruf"],
-        "bundesland": row["bundesland"],
-        "wohnort_groesse": row["wohnort_groesse"],
-        "einkommen": f"{row['einkommen']} EUR",
-        "migration": row["migration"],
-        "religion": row["religion"],
-        "politisches_interesse": row["politisches_interesse"],
-        "links_rechts": f"{row['links_rechts']}/10",
-        "demokratie_zufriedenheit": row["demokratie_zufriedenheit"],
-        "letzte_wahl": row["letzte_wahl"]
+        "alter": row["Date of Birth: Year"],
+        "geschlecht": row["Gender"],
+        "bildung": row["Education: School"],
+        "beruf": row["Gainful Employment: current"],
+        "bundesland": row["Federal State"],
+        "wohnort_groesse": "Not available",  # This column seems to be missing in the new data
+        "einkommen": row["Household Net Income"],
+        "migration": "Not available",  # This column seems to be missing in the new data
+        "religion": row["Religious Denomination"],
+        "politisches_interesse": row["Political Interest"],
+        "links_rechts": row["Left-Right Assessment: Ego"],
+        "demokratie_zufriedenheit": row["Democracy: Satisfaction (5-point Scale)"],
+        "letzte_wahl": row["Party Identification (Version A)"]
     }
     
     prompt = PERSONA_GENERATION_TEMPLATE.format(

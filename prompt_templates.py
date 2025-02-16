@@ -138,37 +138,41 @@ WICHTIG:
 - Die Analyse sollte die stärksten Übereinstimmungen hervorheben'''
 
 # Template für finale Wahlentscheidung
-FINAL_CHOICE_TEMPLATE = '''Du bist ein Experte für Wahlverhalten.
-Basierend auf dem Profil einer Person, den Parteipräferenzen aus dem Wahl-O-Mat
-und aktuellen Nachrichten, sage voraus, welche Partei die Person wählen würde.
+FINAL_CHOICE_TEMPLATE = '''Du bist jetzt die folgende Persona. Versetze dich komplett in ihre Rolle und treffe IHRE Wahlentscheidung.
+Du hast gerade den Wahl-O-Mat gemacht und siehst deine Ergebnisse. Wie würdest du als diese Person, basierend auf deinen
+Überzeugungen, deiner Lebenssituation und den Ergebnissen entscheiden?
 Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt.
 
-Persona:
+Dein Profil (DU BIST DIESE PERSON):
 {persona_json}
 
-Wahl-O-Mat Übereinstimmungen:
+Deine Wahl-O-Mat Ergebnisse (Das sind DEINE Antworten und Übereinstimmungen mit den Parteien):
 {match_percentages}
 
-Parteiprogramme (Auszüge):
+Die Parteiprogramme, die du kennst:
 {party_programs}
 
-Aktuelle Nachrichten:
+Aktuelle Nachrichten, die du gelesen hast:
 {news}
 
-Berücksichtige:
-1. Wahl-O-Mat-Ergebnisse
-2. Bisheriges Wahlverhalten
-3. Aktuelle Nachrichten/Ereignisse
-4. Taktisches Wahlverhalten
+Denke als diese Person:
+- Wie interpretierst du deine Wahl-O-Mat Ergebnisse?
+- Stimmen sie mit deinen bisherigen politischen Überzeugungen überein?
+- Welche Partei vertritt deine Kernthemen am besten?
+- Wie beeinflussen die aktuellen Nachrichten deine Entscheidung?
+- Würdest du dein übliches Wahlverhalten ändern?
 
 Das JSON-Objekt MUSS exakt diesem Format folgen:
 {{
     "partei_wahl": "CDU/CSU",  # MUSS eine der folgenden sein: CDU/CSU, SPD, GRÜNE, FDP, LINKE, AfD
-    "begruendung": "Kurze Begründung der Wahlentscheidung basierend auf Profil und Präferenzen",
-    "sicherheit": 85  # Prozentwert zwischen 0 und 100
+    "begruendung": "Erkläre als die Persona selbst (in der Ich-Form), warum du dich für diese Partei entscheidest",
+    "sicherheit": 85  # Wie sicher bist du dir bei deiner Entscheidung? (0-100%)
 }}
 
 WICHTIG:
-- partei_wahl muss exakt einer der vorgegebenen Parteinamen entsprechen
-- sicherheit muss zwischen 0 und 100 liegen
-- Die Begründung sollte Wahl-O-Mat-Ergebnisse und aktuelle Ereignisse berücksichtigen''' 
+- Bleibe durchgehend in der Rolle der Persona
+- Sprich in der Begründung in der Ich-Form
+- Die Entscheidung muss zu deinem Profil und deiner Lebenssituation passen
+- Berücksichtige dein bisheriges Wahlverhalten
+- partei_wahl muss exakt einem der vorgegebenen Parteinamen entsprechen
+- sicherheit muss zwischen 0 und 100 liegen''' 

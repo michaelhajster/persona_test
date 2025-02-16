@@ -1,6 +1,0 @@
-alter,geschlecht,bildung,beruf,bundesland,wohnort_groesse,einkommen,migration,religion,politisches_interesse,links_rechts,demokratie_zufriedenheit,letzte_wahl
-42,weiblich,Hochschulabschluss,Lehrerin,Bayern,Großstadt,4500,nein,katholisch,hoch,5,zufrieden,SPD
-28,männlich,Ausbildung,Handwerker,Nordrhein-Westfalen,Kleinstadt,2800,ja,keine,mittel,7,neutral,CDU
-65,männlich,Realschule,Rentner,Sachsen,Dorf,2200,nein,evangelisch,sehr hoch,8,unzufrieden,AfD
-35,divers,Master,Software-Entwickler,Berlin,Großstadt,5500,nein,keine,hoch,3,neutral,Grüne
-51,weiblich,Promotion,Ärztin,Baden-Württemberg,Mittelstadt,7000,nein,evangelisch,mittel,6,zufrieden,FDP 
