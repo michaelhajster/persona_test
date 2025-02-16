@@ -14,7 +14,8 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Set
+from datetime import datetime
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -29,6 +30,8 @@ from prompt_templates import (FINAL_CHOICE_TEMPLATE, JUDGE_TEMPLATE,
                             PERSONA_GENERATION_TEMPLATE, WAHLOMAT_TEMPLATE)
 from schemas import (FinalChoiceSchema, JudgeSchema, PersonaSchema,
                     WahlomatSchema)
+from party_utils import (PARTY_KEY_TO_LABEL, PARTY_LABEL_TO_KEY,
+                        party_key_to_label, party_label_to_key)
 
 # Configure logging
 logging.basicConfig(
@@ -103,7 +106,7 @@ def load_party_programs(directory: str = "data/wahlprogramme") -> Dict[str, str]
         party_files = {
             "cdu_csu": "cdu_csu.txt",
             "spd": "spd.txt",
-            "gruene": "grüne.txt",
+            "gruene": "gruene.txt",
             "fdp": "fdp.txt",
             "linke": "linke.txt",
             "afd": "afd.txt"
@@ -127,28 +130,7 @@ def load_news(path: str = "data/news/news_kuratiert.txt") -> str:
     try:
         with open(path, 'r', encoding='utf-8') as f:
             news_content = f.read()
-            
-        # Process the news content to create a more focused summary
-        # Split into sections and take the most recent/relevant parts
-        sections = news_content.split("##")
-        
-        # Get the most recent month's news (last complete section)
-        recent_news = sections[-2] if len(sections) > 2 else sections[-1]
-        
-        # Extract key points
-        key_points = []
-        for line in recent_news.split("\n"):
-            if line.strip().startswith("- "):
-                # Clean up markdown formatting
-                clean_line = line.replace("**", "").replace("_", "").strip("- ")
-                key_points.append(clean_line)
-        
-        # Create a focused summary
-        summary = "Aktuelle Nachrichten:\n\n"
-        summary += "\n".join(f"- {point}" for point in key_points)
-        
-        return summary
-            
+        return f"Aktuelle Nachrichten:\n\n{news_content}"
     except Exception as e:
         logger.error(f"Error loading news: {e}")
         return "Keine aktuellen Nachrichten verfügbar."
@@ -232,56 +214,137 @@ def save_results(results: List[Dict], output_path: str):
             }
             f.write(json.dumps(result_dict, ensure_ascii=False) + '\n')
 
+def get_completed_batches(output_path: str) -> Set[int]:
+    """Get set of already completed batch numbers."""
+    completed = set()
+    base_dir = os.path.dirname(output_path)
+    if not os.path.exists(base_dir):
+        return completed
+        
+    for filename in os.listdir(base_dir):
+        if filename.startswith(os.path.basename(output_path) + ".batch_") and not filename.endswith(".progress"):
+            try:
+                batch_num = int(filename.split("_")[-1])
+                completed.add(batch_num)
+            except ValueError:
+                continue
+    return completed
+
+def load_existing_results(output_path: str, completed_batches: Set[int]) -> List[Dict]:
+    """Load results from completed batches."""
+    results = []
+    for batch_num in sorted(completed_batches):
+        batch_path = f"{output_path}.batch_{batch_num}"
+        try:
+            with open(batch_path, 'r', encoding='utf-8') as f:
+                batch_results = [json.loads(line) for line in f]
+                results.extend(batch_results)
+                logger.info(f"Loaded {len(batch_results)} results from batch {batch_num}")
+        except Exception as e:
+            logger.error(f"Error loading batch {batch_num}: {e}")
+    return results
+
 def run_pipeline(
     csv_path: str,
     sample_size: int,
     output_path: str,
-    do_analyze: bool = False
+    do_analyze: bool = False,
+    batch_size: int = 50,
+    resume: bool = True  # New parameter to control resuming
 ) -> List[Dict]:
-    """Run the complete pipeline."""
+    """Run the complete pipeline with batch processing and resume capability."""
     # Load all required data
     df = load_and_sample_data(csv_path, sample_size)
     questions = load_wahlomat_questions()
     programs = load_party_programs()
     news = load_news()
     
-    results = []
+    # Calculate total number of batches
+    total_batches = len(df) // batch_size + (1 if len(df) % batch_size else 0)
     
-    # Process each persona
-    for _, row in tqdm(df.iterrows(), total=len(df), desc="Processing personas"):
-        try:
-            # Step 1: Create persona
-            persona = create_persona_from_row(row, news)
-            logger.info(f"Created persona: {persona.name}")
-            
-            # Step 2: Get Wahl-O-Mat answers
-            answers = ask_wahlomat_questions(persona, questions, programs)
-            logger.info(f"Got {len(answers.antworten)} Wahl-O-Mat answers")
-            
-            # Step 3: Judge answers
-            match_percentages = judge_wahlomat(answers, programs)
-            logger.info(f"Calculated party matches: {match_percentages.partei_match}")
-            
-            # Step 4: Get final choice
-            final_choice = ask_final_choice(persona, match_percentages, programs, news)
-            logger.info(f"Final choice: {final_choice.partei_wahl} (Sicherheit: {final_choice.sicherheit}%)")
-            
-            # Store results
-            result = {
-                "persona": persona,
-                "answers": answers,
-                "match_percentages": match_percentages,
-                "final_choice": final_choice
-            }
-            results.append(result)
-            
-        except Exception as e:
-            logger.error(f"Error processing row: {e}")
-            continue
+    # Get completed batches and load existing results if resuming
+    completed_batches = get_completed_batches(output_path) if resume else set()
+    results = load_existing_results(output_path, completed_batches) if resume else []
     
-    # Save results
+    if completed_batches:
+        logger.info(f"Found {len(completed_batches)} completed batches: {sorted(completed_batches)}")
+        logger.info(f"Loaded {len(results)} existing results")
+    
+    try:
+        # Process remaining batches
+        for batch_idx in range(total_batches):
+            batch_num = batch_idx + 1
+            
+            # Skip completed batches
+            if batch_num in completed_batches:
+                logger.info(f"Skipping completed batch {batch_num}")
+                continue
+                
+            start_idx = batch_idx * batch_size
+            end_idx = min((batch_idx + 1) * batch_size, len(df))
+            batch_df = df.iloc[start_idx:end_idx]
+            
+            # Create progress file for this batch
+            progress_path = f"{output_path}.batch_{batch_num}.progress"
+            with open(progress_path, 'w', encoding='utf-8') as f:
+                json.dump({
+                    "batch": batch_num,
+                    "start_idx": start_idx,
+                    "end_idx": end_idx,
+                    "total_rows": len(batch_df),
+                    "timestamp": datetime.now().isoformat()
+                }, f, ensure_ascii=False)
+            
+            logger.info(f"Processing batch {batch_num}/{total_batches} (rows {start_idx}-{end_idx})")
+            
+            # Process each persona in the batch
+            batch_results = []
+            for _, row in tqdm(batch_df.iterrows(), total=len(batch_df), desc=f"Batch {batch_num}"):
+                try:
+                    # Generate persona
+                    persona = create_persona_from_row(row, news)
+                    
+                    # Get Wahl-O-Mat answers
+                    answers = ask_wahlomat_questions(persona, questions, programs)
+                    
+                    # Calculate match percentages
+                    match_percentages = judge_wahlomat(answers, programs)
+                    
+                    # Get final choice
+                    final_choice = ask_final_choice(persona, match_percentages, programs, news)
+                    
+                    # Store results
+                    batch_results.append({
+                        "persona": persona,
+                        "answers": answers,
+                        "match_percentages": match_percentages,
+                        "final_choice": final_choice
+                    })
+                    
+                except Exception as e:
+                    logger.error(f"Error processing row: {e}")
+                    continue
+            
+            # Add batch results to main results
+            results.extend(batch_results)
+            
+            # Save batch results
+            batch_path = f"{output_path}.batch_{batch_num}"
+            save_results(batch_results, batch_path)
+            logger.info(f"Saved batch {batch_num} with {len(batch_results)} results")
+            
+            # Remove progress file after successful completion
+            if os.path.exists(progress_path):
+                os.remove(progress_path)
+    
+    except KeyboardInterrupt:
+        logger.info("\nPipeline interrupted by user. Progress has been saved.")
+        logger.info(f"To resume, run the pipeline again with the same output path.")
+        return results
+    
+    # Save final combined results
     save_results(results, output_path)
-    logger.info(f"Saved results to {output_path}")
+    logger.info(f"Pipeline completed. Total results: {len(results)}")
     
     if do_analyze:
         analyze_results(results)
@@ -292,16 +355,6 @@ def analyze_results(results: List[Dict]):
     """Analyze pipeline results with detailed statistics and visualizations."""
     # Setup
     plt.style.use('seaborn-v0_8')
-    
-    # Party name mapping
-    party_map = {
-        'CDU/CSU': 'cdu_csu',
-        'SPD': 'spd',
-        'GRÜNE': 'gruene',
-        'FDP': 'fdp',
-        'LINKE': 'linke',
-        'AfD': 'afd'
-    }
     
     # 1. Party Choice Analysis
     choices = defaultdict(int)
@@ -317,8 +370,8 @@ def analyze_results(results: List[Dict]):
         
         # Match scores from model dump
         matches = result["match_percentages"].partei_match.model_dump()
-        for party, score in matches.items():
-            match_scores[party].append(float(score))
+        for party_key, score in matches.items():
+            match_scores[party_key].append(float(score))
             
         # Age demographics
         age = result["persona"].alter
@@ -382,26 +435,25 @@ def analyze_results(results: List[Dict]):
     print("\nWahl-Analyse:")
     print("-" * 40)
     print("\nStimmenverteilung:")
-    for party, count in sorted(choices.items(), key=lambda x: x[1], reverse=True):
+    for party_label, count in sorted(choices.items(), key=lambda x: x[1], reverse=True):
         percentage = (count / len(results)) * 100
-        avg_certainty = np.mean(certainties[party])
-        party_key = party_map.get(party, party.lower())
+        avg_certainty = np.mean(certainties[party_label])
+        party_key = party_label_to_key(party_label)
         avg_match = np.mean([score for score in match_scores[party_key] if score is not None])
-        print(f"{party:8}: {count:2} Stimmen ({percentage:4.1f}%)")
+        print(f"{party_label:8}: {count:2} Stimmen ({percentage:4.1f}%)")
         print(f"        Durchschn. Sicherheit: {avg_certainty:4.1f}%")
         print(f"        Durchschn. Übereinstimmung: {avg_match:4.1f}%")
     
     print("\nAnalyse-Dateien erstellt in data/analysis/:")
     print("- party_distribution.png: Stimmenverteilung nach Parteien")
     print("- match_scores.png: Verteilung der Übereinstimmungswerte")
-    print("- age_distribution.png: Wahlverhalten nach Altersgruppen")
 
 def main():
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Wahl-O-Mat KI Pipeline")
     parser.add_argument(
         "--csv_path",
-        default="data/gles_clean.csv",
+        default="data/handbereinigt_michi.csv",
         help="Path to GLES dataset"
     )
     parser.add_argument(
@@ -420,6 +472,17 @@ def main():
         action="store_true",
         help="Analyze results after pipeline completion"
     )
+    parser.add_argument(
+        "--batch_size",
+        type=int,
+        default=50,
+        help="Number of personas to process in each batch"
+    )
+    parser.add_argument(
+        "--no_resume",
+        action="store_true",
+        help="Don't resume from previous progress"
+    )
     
     args = parser.parse_args()
     
@@ -428,7 +491,9 @@ def main():
         args.csv_path,
         args.sample_size,
         args.output_path,
-        args.do_analyze
+        args.do_analyze,
+        args.batch_size,
+        not args.no_resume
     )
 
 if __name__ == "__main__":

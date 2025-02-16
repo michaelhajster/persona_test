@@ -10,6 +10,8 @@ Definiert die Datenstrukturen für:
 from typing import List, Optional
 from pydantic import BaseModel, Field, field_validator
 
+from party_utils import VALID_PARTY_LABELS, party_label_to_key, party_key_to_label
+
 
 class PersonaSchema(BaseModel):
     """Schema für generierte Wähler-Persona."""
@@ -85,9 +87,8 @@ class FinalChoiceSchema(BaseModel):
 
     @field_validator("partei_wahl")
     def validate_partei(cls, v):
-        valid_parties = {"CDU/CSU", "SPD", "GRÜNE", "FDP", "LINKE", "AfD"}
-        if v not in valid_parties:
-            raise ValueError(f"Partei muss eine von {valid_parties} sein")
+        if v not in VALID_PARTY_LABELS:
+            raise ValueError(f"Partei muss eine von {VALID_PARTY_LABELS} sein")
         return v
 
     @field_validator("sicherheit")

@@ -2,33 +2,261 @@
   "thesen": [
     {
       "id": 1,
-      "these": "Deutschland soll aus der Kernenergie aussteigen.",
-      "thema": "Energie & Umwelt",
-      "kontext": "Diskussion um Energiewende und Klimaschutz"
+      "these": "Deutschland soll die Ukraine weiterhin militärisch unterstützen.",
+      "thema": "Außen- und Sicherheitspolitik",
+      "kontext": "Diskussion um militärische Hilfe im Ukraine-Konflikt"
     },
     {
       "id": 2,
-      "these": "Der gesetzliche Mindestlohn soll erhöht werden.",
-      "thema": "Arbeit & Soziales",
-      "kontext": "Debatte um Lohngerechtigkeit und Lebenshaltungskosten"
+      "these": "Der Ausbau erneuerbarer Energien soll weiterhin vom Staat finanziell gefördert werden.",
+      "thema": "Energie & Umwelt",
+      "kontext": "Staatliche Förderung erneuerbarer Energien und Klimaschutz"
     },
     {
       "id": 3,
-      "these": "Deutschland soll mehr Geflüchtete aufnehmen.",
-      "thema": "Migration & Integration",
-      "kontext": "Aktuelle Flüchtlingssituation in Europa"
+      "these": "Das Bürgergeld soll denjenigen gestrichen werden, die wiederholt Stellenangebote ablehnen.",
+      "thema": "Arbeit & Soziales",
+      "kontext": "Bürgergeld und Sanktionsmöglichkeiten bei Ablehnung von Stellen"
     },
     {
       "id": 4,
-      "these": "Das Renteneintrittsalter soll gesenkt werden.",
-      "thema": "Rente & Alter",
-      "kontext": "Demografischer Wandel und Rentensystem"
+      "these": "Auf allen Autobahnen soll ein generelles Tempolimit gelten.",
+      "thema": "Verkehr",
+      "kontext": "Debatte um Klimaschutz und Verkehrssicherheit"
     },
     {
       "id": 5,
-      "these": "Cannabis soll legalisiert werden.",
-      "thema": "Drogenpolitik",
-      "kontext": "Gesellschaftliche Debatte um Drogenpolitik"
+      "these": "Asylsuchende, die über einen anderen EU-Staat eingereist sind, sollen an den deutschen Grenzen abgewiesen werden.",
+      "thema": "Migration & Integration",
+      "kontext": "EU-Dublin-Verfahren und Verteilung von Geflüchteten"
+    },
+    {
+      "id": 6,
+      "these": "Bei Neuvermietungen sollen die Mietpreise weiterhin gesetzlich begrenzt werden.",
+      "thema": "Wohnen",
+      "kontext": "Mietpreisbremse und Regulierung des Wohnungsmarkts"
+    },
+    {
+      "id": 7,
+      "these": "An Bahnhöfen soll die Bundespolizei Software zur automatisierten Gesichtserkennung einsetzen dürfen.",
+      "thema": "Innenpolitik & Sicherheit",
+      "kontext": "Überwachungstechnologie im öffentlichen Raum"
+    },
+    {
+      "id": 8,
+      "these": "Energieintensive Unternehmen sollen vom Staat einen finanziellen Ausgleich für ihre Stromkosten erhalten.",
+      "thema": "Wirtschaft & Energie",
+      "kontext": "Wettbewerbsfähigkeit energieintensiver Branchen"
+    },
+    {
+      "id": 9,
+      "these": "Alle Beschäftigten sollen bereits nach 40 Beitragsjahren ohne Abschläge in Rente gehen können.",
+      "thema": "Rente & Soziales",
+      "kontext": "Früherer Renteneintritt und Finanzierung"
+    },
+    {
+      "id": 10,
+      "these": "Im einleitenden Satz des Grundgesetzes soll weiterhin die Formulierung „Verantwortung vor Gott“ stehen.",
+      "thema": "Staat & Gesellschaft",
+      "kontext": "Diskussion um religiöse Bezüge in der Verfassung"
+    },
+    {
+      "id": 11,
+      "these": "Deutschland soll weiterhin die Anwerbung von Fachkräften aus dem Ausland fördern.",
+      "thema": "Arbeit & Wirtschaft",
+      "kontext": "Fachkräftemangel und Einwanderungspolitik"
+    },
+    {
+      "id": 12,
+      "these": "Für die Stromerzeugung soll Deutschland wieder Kernenergie nutzen.",
+      "thema": "Energie & Umwelt",
+      "kontext": "Atomkraftdebatte und Versorgungssicherheit"
+    },
+    {
+      "id": 13,
+      "these": "Bei der Besteuerung von Einkommen soll der Spitzensteuersatz angehoben werden.",
+      "thema": "Finanzen & Steuern",
+      "kontext": "Steuergerechtigkeit und Umverteilungsdiskussion"
+    },
+    {
+      "id": 14,
+      "these": "Der Bund soll mehr Kompetenzen in der Schulpolitik erhalten.",
+      "thema": "Bildung & Föderalismus",
+      "kontext": "Zentrale vs. föderale Zuständigkeit im Bildungswesen"
+    },
+    {
+      "id": 15,
+      "these": "Aus Deutschland sollen weiterhin Rüstungsgüter nach Israel exportiert werden dürfen.",
+      "thema": "Außenhandel & Sicherheit",
+      "kontext": "Rüstungsexporte und Nahostpolitik"
+    },
+    {
+      "id": 16,
+      "these": "Alle Bürgerinnen und Bürger sollen in gesetzlichen Krankenkassen versichert sein müssen.",
+      "thema": "Gesundheit & Soziales",
+      "kontext": "Bürgerversicherung vs. privates Versicherungssystem"
+    },
+    {
+      "id": 17,
+      "these": "Die gesetzliche Frauenquote in Vorständen und Aufsichtsräten börsennotierter Unternehmen soll abgeschafft werden.",
+      "thema": "Gleichstellung & Wirtschaft",
+      "kontext": "Kontroverse um Frauenförderung in Führungspositionen"
+    },
+    {
+      "id": 18,
+      "these": "Ökologische Landwirtschaft soll stärker gefördert werden als konventionelle Landwirtschaft.",
+      "thema": "Landwirtschaft & Umwelt",
+      "kontext": "Förderung nachhaltiger Anbaumethoden"
+    },
+    {
+      "id": 19,
+      "these": "Der Bund soll Projekte gegen Rechtsextremismus verstärkt fördern.",
+      "thema": "Innenpolitik & Gesellschaft",
+      "kontext": "Prävention und Bekämpfung von Extremismus"
+    },
+    {
+      "id": 20,
+      "these": "Unternehmen sollen weiterhin die Einhaltung der Menschenrechte und des Umweltschutzes bei allen Zulieferern kontrollieren müssen.",
+      "thema": "Wirtschaft & Menschenrechte",
+      "kontext": "Lieferkettengesetz und Unternehmensverantwortung"
+    },
+    {
+      "id": 21,
+      "these": "Die Ausbildungsförderung BAföG soll weiterhin abhängig vom Einkommen der Eltern gezahlt werden.",
+      "thema": "Bildung & Soziales",
+      "kontext": "Chancengleichheit und Studienfinanzierung"
+    },
+    {
+      "id": 22,
+      "these": "Die Schuldenbremse im Grundgesetz soll beibehalten werden.",
+      "thema": "Finanzen & Haushalt",
+      "kontext": "Staatsschulden und Haushaltsdisziplin"
+    },
+    {
+      "id": 23,
+      "these": "Asylsuchende sollen in Deutschland sofort nach ihrer Antragstellung eine Arbeitserlaubnis erhalten.",
+      "thema": "Migration & Arbeit",
+      "kontext": "Integration durch Beschäftigung und Bürokratieabbau"
+    },
+    {
+      "id": 24,
+      "these": "Deutschland soll das Ziel verwerfen, klimaneutral zu werden.",
+      "thema": "Klima & Umwelt",
+      "kontext": "Klimaschutzpolitik und Klimawandel"
+    },
+    {
+      "id": 25,
+      "these": "In Deutschland soll die 35-Stunden-Woche als gesetzliche Regelarbeitszeit für alle Beschäftigten festgelegt werden.",
+      "thema": "Arbeit & Soziales",
+      "kontext": "Arbeitszeitverkürzung und Work-Life-Balance"
+    },
+    {
+      "id": 26,
+      "these": "Schwangerschaftsabbrüche sollen in den ersten drei Monaten weiterhin nur nach Beratung straffrei sein.",
+      "thema": "Gesundheit & Gesellschaft",
+      "kontext": "Schwangerschaftskonfliktberatung und Abtreibungsregelung"
+    },
+    {
+      "id": 27,
+      "these": "Der Euro soll in Deutschland durch eine nationale Währung ersetzt werden.",
+      "thema": "Wirtschaft & Europa",
+      "kontext": "Euroskeptizismus und europäische Integration"
+    },
+    {
+      "id": 28,
+      "these": "Beim Ausbau der Verkehrsinfrastruktur soll die Schiene Vorrang vor der Straße haben.",
+      "thema": "Verkehr & Umwelt",
+      "kontext": "Verkehrswende und Klimaschutzmaßnahmen"
+    },
+    {
+      "id": 29,
+      "these": "Ehrenamtliche Tätigkeiten sollen auf die zukünftige Rente angerechnet werden.",
+      "thema": "Rente & Gesellschaft",
+      "kontext": "Anerkennung bürgerschaftlichen Engagements"
+    },
+    {
+      "id": 30,
+      "these": "Die Grundsteuer soll weiterhin auf Mieterinnen und Mieter umgelegt werden dürfen.",
+      "thema": "Wohnen & Steuern",
+      "kontext": "Belastung von Mietenden durch Betriebskosten"
+    },
+    {
+      "id": 31,
+      "these": "Das Streikrecht für Beschäftigte in Unternehmen der kritischen Infrastruktur soll gesetzlich eingeschränkt werden.",
+      "thema": "Arbeit & Recht",
+      "kontext": "Arbeitskämpfe und Versorgungssicherheit"
+    },
+    {
+      "id": 32,
+      "these": "In Deutschland soll es auf Bundesebene Volksentscheide geben können.",
+      "thema": "Demokratie & Politik",
+      "kontext": "Direkte Demokratie und Bürgerbeteiligung"
+    },
+    {
+      "id": 33,
+      "these": "Unter 14-Jährige sollen strafrechtlich belangt werden können.",
+      "thema": "Jugend & Recht",
+      "kontext": "Mindestalter für Strafmündigkeit"
+    },
+    {
+      "id": 34,
+      "these": "Deutschland soll sich für die Abschaffung der erhöhten EU-Zölle auf chinesische Elektroautos einsetzen.",
+      "thema": "Außenhandel & Wirtschaft",
+      "kontext": "Handelspolitik mit China und Wettbewerbsfähigkeit"
+    },
+    {
+      "id": 35,
+      "these": "In Deutschland soll es weiterhin generell möglich sein, neben der deutschen eine zweite Staatsbürgerschaft zu haben.",
+      "thema": "Migration & Staatsangehörigkeit",
+      "kontext": "Doppelte Staatsbürgerschaft und Integration"
+    },
+    {
+      "id": 36,
+      "these": "Für junge Erwachsene soll ein soziales Pflichtjahr eingeführt werden.",
+      "thema": "Gesellschaft & Soziales",
+      "kontext": "Verpflichtendes Engagement und Gemeinwohl"
+    },
+    {
+      "id": 37,
+      "these": "Neue Heizungen sollen auch zukünftig vollständig mit fossilen Brennstoffen (z. B. Gas oder Öl) betrieben werden dürfen.",
+      "thema": "Energie & Umwelt",
+      "kontext": "Heizungsmodernisierung und Klimaschutz"
+    },
+    {
+      "id": 38,
+      "these": "Der gesetzliche Mindestlohn soll spätestens 2026 auf 15 Euro erhöht werden.",
+      "thema": "Arbeit & Soziales",
+      "kontext": "Lohnniveau und Armutsbekämpfung"
+    },
+    {
+      "id": 39,
+      "these": "Die Erbschaftssteuer soll abgeschafft werden.",
+      "thema": "Finanzen & Steuern",
+      "kontext": "Debatte um Vermögensübertragung und Steuergerechtigkeit"
+    },
+    {
+      "id": 40,
+      "these": "Deutschland soll ein Punktesystem zur Steuerung der Einwanderung einführen.",
+      "thema": "Migration & Integration",
+      "kontext": "Gezielte Zuwanderung und Fachkräftesicherung"
+    },
+    {
+      "id": 41,
+      "these": "Kinder und Jugendliche sollen staatliche Gutscheine für kulturelle Aktivitäten (z. B. Museen, Theater) erhalten.",
+      "thema": "Kultur & Bildung",
+      "kontext": "Förderung kultureller Teilhabe und Bildungsgerechtigkeit"
+    },
+    {
+      "id": 42,
+      "these": "Es soll ein generelles Verbot von privaten Feuerwerken an Silvester geben.",
+      "thema": "Umwelt & Sicherheit",
+      "kontext": "Reduzierung von Lärm- und Feinstaubbelastung"
+    },
+    {
+      "id": 43,
+      "these": "Die Legalisierung von Online-Glücksspielen soll rückgängig gemacht werden.",
+      "thema": "Gesundheit & Gesellschaft",
+      "kontext": "Suchtprävention und Verbraucherschutz"
     }
   ]
-} 
+}
